@@ -43,7 +43,7 @@ export const createStaffUser = createServerFn({ method: "POST" })
       email: data.email,
       password: data.password,
       email_confirm: true,
-      user_metadata: data.fullName ? { full_name: data.fullName } : undefined,
+      user_metadata: { full_name: data.fullName || data.email },
     });
     if (created.error || !created.data.user) {
       throw new Error(created.error?.message ?? "Could not create the account");
