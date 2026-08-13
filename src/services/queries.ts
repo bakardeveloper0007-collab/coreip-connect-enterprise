@@ -70,6 +70,11 @@ export const adminQueries = {
   resource: (key: api.RepositoryKey, options: ListOptions = {}) =>
     queryOptions({
       queryKey: ["admin", "resource", key, options],
-      queryFn: () => api.repositories[key].list({ publishedOnly: false, ...options }),
+      queryFn: async () => {
+        const repo = api.repositories[key] as {
+          list: (o: ListOptions) => Promise<{ items: Record<string, unknown>[]; total: number }>;
+        };
+        return repo.list({ publishedOnly: false, ...options });
+      },
     }),
 };
