@@ -16,11 +16,18 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        hero: "bg-[image:var(--gradient-brand)] text-cyan-foreground font-semibold shadow-[var(--shadow-soft)] transition-all hover:brightness-110 hover:shadow-[var(--shadow-lift)]",
+        navy: "bg-navy text-navy-foreground shadow-[var(--shadow-soft)] transition-all hover:bg-navy-deep",
+        onDark:
+          "border border-navy-foreground/25 bg-navy-foreground/5 text-navy-foreground backdrop-blur-sm transition-colors hover:border-cyan/50 hover:bg-navy-foreground/10",
+        quiet:
+          "border border-border bg-card text-foreground shadow-[var(--shadow-soft)] transition-colors hover:border-cyan/50",
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
+        xl: "h-12 rounded-md px-7 text-[0.95rem]",
         icon: "h-9 w-9",
       },
     },
