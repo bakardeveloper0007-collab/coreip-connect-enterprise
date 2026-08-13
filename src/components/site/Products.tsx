@@ -5,8 +5,8 @@ import { Reveal } from "./Reveal";
 import { PRODUCT_GROUPS } from "./data";
 
 export function Products() {
-  const [active, setActive] = useState(PRODUCT_GROUPS[0].group);
-  const group = PRODUCT_GROUPS.find((g) => g.group === active) ?? PRODUCT_GROUPS[0];
+  const [active, setActive] = useState(PRODUCT_GROUPS[0]!.group);
+  const group = PRODUCT_GROUPS.find((g) => g.group === active) ?? PRODUCT_GROUPS[0]!;
 
   return (
     <section id="products" className="section-y bg-surface">
