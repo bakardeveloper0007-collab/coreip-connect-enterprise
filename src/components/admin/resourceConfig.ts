@@ -1,0 +1,302 @@
+import { STATUS_OPTIONS, type FieldDef } from "./fields";
+import type { ColumnDef } from "./ResourceManager";
+import type { RepositoryKey } from "@/services/api";
+
+export interface ResourceConfig {
+  resource: RepositoryKey;
+  title: string;
+  description: string;
+  titleField: string;
+  columns: ColumnDef[];
+  fields: FieldDef[];
+}
+
+const seoFields: FieldDef[] = [
+  { name: "seo_title", label: "SEO title", type: "text", group: "SEO" },
+  { name: "seo_description", label: "SEO description", type: "textarea", group: "SEO" },
+];
+
+const statusField: FieldDef = {
+  name: "status",
+  label: "Status",
+  type: "select",
+  options: STATUS_OPTIONS,
+  required: true,
+  group: "Publishing",
+};
+
+const sortField: FieldDef = {
+  name: "sort_order",
+  label: "Sort order",
+  type: "number",
+  group: "Publishing",
+};
+
+export const RESOURCE_CONFIG = {
+  products: {
+    resource: "products",
+    title: "Products",
+    description: "Manage the CoreIP product catalogue, media, specifications and SEO.",
+    titleField: "name",
+    columns: [
+      { key: "name", label: "Product" },
+      {
+        key: "category",
+        label: "Category",
+        render: (row) => (row["category"] as { name?: string } | null)?.name ?? "—",
+      },
+      { key: "status", label: "Status" },
+      { key: "sort_order", label: "Order" },
+    ],
+    fields: [
+      { name: "name", label: "Product name", type: "text", required: true },
+      { name: "slug", label: "URL slug", type: "slug", sourceField: "name", help: "Leave blank to generate from the name." },
+      { name: "category_id", label: "Category", type: "select", optionsSource: "categories" },
+      { name: "short_description", label: "Short description", type: "textarea" },
+      { name: "long_description", label: "Full description", type: "richtext" },
+      { name: "image_url", label: "Primary image", type: "image", group: "Media" },
+      { name: "gallery", label: "Gallery image URLs", type: "tags", group: "Media" },
+      { name: "brochure_url", label: "Brochure (PDF)", type: "file", group: "Media" },
+      { name: "video_url", label: "Video URL", type: "url", group: "Media" },
+      { name: "features", label: "Features", type: "tags", group: "Details" },
+      { name: "benefits", label: "Benefits", type: "tags", group: "Details" },
+      { name: "applications", label: "Applications", type: "tags", group: "Details" },
+      { name: "specifications", label: "Specifications", type: "keyvalue", group: "Details" },
+      { name: "cta_text", label: "CTA label", type: "text", group: "Call to action" },
+      { name: "cta_link", label: "CTA link", type: "text", group: "Call to action" },
+      ...seoFields,
+      statusField,
+      sortField,
+    ],
+  },
+  categories: {
+    resource: "categories",
+    title: "Product categories",
+    description: "Categories drive product grouping, menus and catalogue pages.",
+    titleField: "name",
+    columns: [
+      { key: "name", label: "Category" },
+      { key: "slug", label: "Slug" },
+      { key: "sort_order", label: "Order" },
+    ],
+    fields: [
+      { name: "name", label: "Category name", type: "text", required: true },
+      { name: "slug", label: "URL slug", type: "slug", sourceField: "name" },
+      { name: "description", label: "Description", type: "textarea" },
+      { name: "image_url", label: "Image", type: "image", group: "Media" },
+      { name: "icon", label: "Icon name", type: "text", group: "Media", help: "Lucide icon name, e.g. server." },
+      ...seoFields,
+      { name: "enabled", label: "Enabled", type: "boolean", group: "Publishing" },
+      sortField,
+    ],
+  },
+  services: {
+    resource: "services",
+    title: "Solutions",
+    description: "Solution and service pages shown across the website.",
+    titleField: "name",
+    columns: [
+      { key: "name", label: "Solution" },
+      { key: "category", label: "Group" },
+      { key: "status", label: "Status" },
+      { key: "sort_order", label: "Order" },
+    ],
+    fields: [
+      { name: "name", label: "Solution name", type: "text", required: true },
+      { name: "slug", label: "URL slug", type: "slug", sourceField: "name" },
+      { name: "category", label: "Group", type: "text" },
+      { name: "icon", label: "Icon name", type: "text" },
+      { name: "short_description", label: "Short description", type: "textarea" },
+      { name: "long_description", label: "Full description", type: "richtext" },
+      { name: "hero_image_url", label: "Hero image", type: "image", group: "Media" },
+      { name: "gallery", label: "Gallery image URLs", type: "tags", group: "Media" },
+      { name: "video_url", label: "Video URL", type: "url", group: "Media" },
+      { name: "features", label: "Features", type: "tags", group: "Details" },
+      { name: "benefits", label: "Benefits", type: "tags", group: "Details" },
+      { name: "applications", label: "Applications", type: "tags", group: "Details" },
+      { name: "cta_text", label: "CTA label", type: "text", group: "Call to action" },
+      { name: "cta_link", label: "CTA link", type: "text", group: "Call to action" },
+      ...seoFields,
+      { name: "featured", label: "Featured", type: "boolean", group: "Publishing" },
+      statusField,
+      sortField,
+    ],
+  },
+  industries: {
+    resource: "industries",
+    title: "Industries",
+    description: "Industry pages and the sectors CoreIP serves.",
+    titleField: "name",
+    columns: [
+      { key: "name", label: "Industry" },
+      { key: "status", label: "Status" },
+      { key: "sort_order", label: "Order" },
+    ],
+    fields: [
+      { name: "name", label: "Industry name", type: "text", required: true },
+      { name: "slug", label: "URL slug", type: "slug", sourceField: "name" },
+      { name: "description", label: "Short description", type: "textarea" },
+      { name: "long_description", label: "Full description", type: "richtext" },
+      { name: "hero_image_url", label: "Hero image", type: "image", group: "Media" },
+      { name: "icon", label: "Icon name", type: "text", group: "Media" },
+      { name: "highlights", label: "Highlights", type: "tags", group: "Details" },
+      ...seoFields,
+      statusField,
+      sortField,
+    ],
+  },
+  projects: {
+    resource: "projects",
+    title: "Projects",
+    description: "Deployments and case studies used as proof points.",
+    titleField: "title",
+    columns: [
+      { key: "title", label: "Project" },
+      { key: "customer", label: "Customer" },
+      { key: "status", label: "Status" },
+    ],
+    fields: [
+      { name: "title", label: "Project title", type: "text", required: true },
+      { name: "slug", label: "URL slug", type: "slug", sourceField: "title" },
+      { name: "customer", label: "Customer", type: "text" },
+      { name: "industry_id", label: "Industry", type: "select", optionsSource: "industries" },
+      { name: "location", label: "Location", type: "text" },
+      { name: "solution", label: "Solution delivered", type: "text" },
+      { name: "project_date", label: "Project date", type: "date" },
+      { name: "description", label: "Description", type: "richtext" },
+      { name: "highlights", label: "Highlights", type: "tags", group: "Details" },
+      { name: "technologies", label: "Technologies", type: "tags", group: "Details" },
+      { name: "cover_image_url", label: "Cover image", type: "image", group: "Media" },
+      { name: "gallery", label: "Gallery image URLs", type: "tags", group: "Media" },
+      { name: "case_study_url", label: "Case study URL", type: "url", group: "Media" },
+      ...seoFields,
+      statusField,
+      sortField,
+    ],
+  },
+  team: {
+    resource: "team",
+    title: "Team",
+    description: "Leadership and team members shown on the company pages.",
+    titleField: "name",
+    columns: [
+      { key: "name", label: "Name" },
+      { key: "designation", label: "Designation" },
+      { key: "status", label: "Status" },
+    ],
+    fields: [
+      { name: "name", label: "Full name", type: "text", required: true },
+      { name: "designation", label: "Designation", type: "text" },
+      { name: "department", label: "Department", type: "text" },
+      { name: "email", label: "Email", type: "email" },
+      { name: "linkedin_url", label: "LinkedIn URL", type: "url" },
+      { name: "profile_image_url", label: "Photo", type: "image", group: "Media" },
+      { name: "short_bio", label: "Short bio", type: "textarea" },
+      statusField,
+      sortField,
+    ],
+  },
+  partners: {
+    resource: "partners",
+    title: "Partners",
+    description: "Technology and channel partners displayed on the website.",
+    titleField: "name",
+    columns: [
+      { key: "name", label: "Partner" },
+      { key: "status", label: "Status" },
+      { key: "sort_order", label: "Order" },
+    ],
+    fields: [
+      { name: "name", label: "Partner name", type: "text", required: true },
+      { name: "logo_url", label: "Logo", type: "image", group: "Media" },
+      { name: "website_url", label: "Website", type: "url" },
+      { name: "description", label: "Description", type: "textarea" },
+      statusField,
+      sortField,
+    ],
+  },
+  testimonials: {
+    resource: "testimonials",
+    title: "Testimonials",
+    description: "Customer quotes used across the website.",
+    titleField: "author_name",
+    columns: [
+      { key: "author_name", label: "Author" },
+      { key: "organisation", label: "Organisation" },
+      { key: "status", label: "Status" },
+    ],
+    fields: [
+      { name: "author_name", label: "Author name", type: "text", required: true },
+      { name: "author_title", label: "Author title", type: "text" },
+      { name: "organisation", label: "Organisation", type: "text" },
+      { name: "quote", label: "Quote", type: "textarea", required: true },
+      { name: "avatar_url", label: "Avatar", type: "image", group: "Media" },
+      statusField,
+      sortField,
+    ],
+  },
+  faqs: {
+    resource: "faqs",
+    title: "FAQs",
+    description: "Frequently asked questions, also used to ground the assistant.",
+    titleField: "question",
+    columns: [
+      { key: "question", label: "Question" },
+      { key: "category", label: "Category" },
+      { key: "status", label: "Status" },
+    ],
+    fields: [
+      { name: "question", label: "Question", type: "text", required: true },
+      { name: "answer", label: "Answer", type: "textarea", required: true },
+      { name: "category", label: "Category", type: "text" },
+      { name: "related_product_id", label: "Related product", type: "select", optionsSource: "products" },
+      { name: "related_service_id", label: "Related solution", type: "select", optionsSource: "services" },
+      statusField,
+      sortField,
+    ],
+  },
+  knowledge: {
+    resource: "knowledge",
+    title: "Assistant knowledge base",
+    description: "Content the CoreIP assistant is allowed to answer from.",
+    titleField: "title",
+    columns: [
+      { key: "title", label: "Article" },
+      { key: "category", label: "Category" },
+      { key: "status", label: "Status" },
+    ],
+    fields: [
+      { name: "title", label: "Title", type: "text", required: true },
+      { name: "category", label: "Category", type: "text" },
+      { name: "content", label: "Content", type: "richtext", required: true },
+      { name: "keywords", label: "Keywords", type: "tags" },
+      { name: "link_url", label: "Link URL", type: "text" },
+      { name: "link_label", label: "Link label", type: "text" },
+      { name: "related_product_id", label: "Related product", type: "select", optionsSource: "products" },
+      { name: "related_service_id", label: "Related solution", type: "select", optionsSource: "services" },
+      statusField,
+    ],
+  },
+  statistics: {
+    resource: "statistics",
+    title: "Statistics",
+    description: "Counters shown on the homepage.",
+    titleField: "label",
+    columns: [
+      { key: "label", label: "Label" },
+      { key: "value", label: "Value" },
+      { key: "suffix", label: "Suffix" },
+      { key: "sort_order", label: "Order" },
+    ],
+    fields: [
+      { name: "label", label: "Label", type: "text", required: true },
+      { name: "value", label: "Value", type: "number" },
+      { name: "suffix", label: "Suffix", type: "text", help: "For example + or %." },
+      { name: "icon", label: "Icon name", type: "text" },
+      { name: "enabled", label: "Enabled", type: "boolean", group: "Publishing" },
+      sortField,
+    ],
+  },
+} satisfies Record<string, ResourceConfig>;
+
+export type ResourceConfigKey = keyof typeof RESOURCE_CONFIG;
