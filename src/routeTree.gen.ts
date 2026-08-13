@@ -15,7 +15,10 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminIndustriesRouteImport } from './routes/admin.industries'
+import { Route as AdminInquiriesRouteImport } from './routes/admin.inquiries'
 import { Route as AdminKnowledgeRouteImport } from './routes/admin.knowledge'
+import { Route as AdminLogsRouteImport } from './routes/admin.logs'
+import { Route as AdminMediaRouteImport } from './routes/admin.media'
 import { Route as AdminPartnersRouteImport } from './routes/admin.partners'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
@@ -55,9 +58,24 @@ const AdminIndustriesRoute = AdminIndustriesRouteImport.update({
   path: '/industries',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminInquiriesRoute = AdminInquiriesRouteImport.update({
+  id: '/inquiries',
+  path: '/inquiries',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminKnowledgeRoute = AdminKnowledgeRouteImport.update({
   id: '/knowledge',
   path: '/knowledge',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLogsRoute = AdminLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMediaRoute = AdminMediaRouteImport.update({
+  id: '/media',
+  path: '/media',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminPartnersRoute = AdminPartnersRouteImport.update({
@@ -107,7 +125,10 @@ export interface FileRoutesByFullPath {
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/faqs': typeof AdminFaqsRoute
   '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/admin/logs': typeof AdminLogsRoute
+  '/admin/media': typeof AdminMediaRoute
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -123,7 +144,10 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/faqs': typeof AdminFaqsRoute
   '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/admin/logs': typeof AdminLogsRoute
+  '/admin/media': typeof AdminMediaRoute
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -141,7 +165,10 @@ export interface FileRoutesById {
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/faqs': typeof AdminFaqsRoute
   '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/admin/logs': typeof AdminLogsRoute
+  '/admin/media': typeof AdminMediaRoute
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -160,7 +187,10 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/faqs'
     | '/admin/industries'
+    | '/admin/inquiries'
     | '/admin/knowledge'
+    | '/admin/logs'
+    | '/admin/media'
     | '/admin/partners'
     | '/admin/products'
     | '/admin/projects'
@@ -176,7 +206,10 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/faqs'
     | '/admin/industries'
+    | '/admin/inquiries'
     | '/admin/knowledge'
+    | '/admin/logs'
+    | '/admin/media'
     | '/admin/partners'
     | '/admin/products'
     | '/admin/projects'
@@ -193,7 +226,10 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/faqs'
     | '/admin/industries'
+    | '/admin/inquiries'
     | '/admin/knowledge'
+    | '/admin/logs'
+    | '/admin/media'
     | '/admin/partners'
     | '/admin/products'
     | '/admin/projects'
@@ -255,11 +291,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndustriesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/inquiries': {
+      id: '/admin/inquiries'
+      path: '/inquiries'
+      fullPath: '/admin/inquiries'
+      preLoaderRoute: typeof AdminInquiriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/knowledge': {
       id: '/admin/knowledge'
       path: '/knowledge'
       fullPath: '/admin/knowledge'
       preLoaderRoute: typeof AdminKnowledgeRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/logs': {
+      id: '/admin/logs'
+      path: '/logs'
+      fullPath: '/admin/logs'
+      preLoaderRoute: typeof AdminLogsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/media': {
+      id: '/admin/media'
+      path: '/media'
+      fullPath: '/admin/media'
+      preLoaderRoute: typeof AdminMediaRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/partners': {
@@ -325,7 +382,10 @@ interface AdminRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminFaqsRoute: typeof AdminFaqsRoute
   AdminIndustriesRoute: typeof AdminIndustriesRoute
+  AdminInquiriesRoute: typeof AdminInquiriesRoute
   AdminKnowledgeRoute: typeof AdminKnowledgeRoute
+  AdminLogsRoute: typeof AdminLogsRoute
+  AdminMediaRoute: typeof AdminMediaRoute
   AdminPartnersRoute: typeof AdminPartnersRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AdminProjectsRoute: typeof AdminProjectsRoute
@@ -340,7 +400,10 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminFaqsRoute: AdminFaqsRoute,
   AdminIndustriesRoute: AdminIndustriesRoute,
+  AdminInquiriesRoute: AdminInquiriesRoute,
   AdminKnowledgeRoute: AdminKnowledgeRoute,
+  AdminLogsRoute: AdminLogsRoute,
+  AdminMediaRoute: AdminMediaRoute,
   AdminPartnersRoute: AdminPartnersRoute,
   AdminProductsRoute: AdminProductsRoute,
   AdminProjectsRoute: AdminProjectsRoute,
