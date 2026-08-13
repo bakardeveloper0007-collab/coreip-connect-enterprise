@@ -12,6 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
+import { Route as AdminIndustriesRouteImport } from './routes/admin.industries'
+import { Route as AdminKnowledgeRouteImport } from './routes/admin.knowledge'
+import { Route as AdminPartnersRouteImport } from './routes/admin.partners'
+import { Route as AdminProductsRouteImport } from './routes/admin.products'
+import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
+import { Route as AdminSolutionsRouteImport } from './routes/admin.solutions'
+import { Route as AdminStatisticsRouteImport } from './routes/admin.statistics'
+import { Route as AdminTeamRouteImport } from './routes/admin.team'
+import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminLoginRouteImport } from './routes/admin_.login'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +40,61 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminFaqsRoute = AdminFaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminIndustriesRoute = AdminIndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminKnowledgeRoute = AdminKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPartnersRoute = AdminPartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProjectsRoute = AdminProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSolutionsRoute = AdminSolutionsRouteImport.update({
+  id: '/solutions',
+  path: '/solutions',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStatisticsRoute = AdminStatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTeamRoute = AdminTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin_/login',
   path: '/admin/login',
@@ -38,11 +104,33 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/admin/partners': typeof AdminPartnersRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/projects': typeof AdminProjectsRoute
+  '/admin/solutions': typeof AdminSolutionsRoute
+  '/admin/statistics': typeof AdminStatisticsRoute
+  '/admin/team': typeof AdminTeamRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/admin/partners': typeof AdminPartnersRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/projects': typeof AdminProjectsRoute
+  '/admin/solutions': typeof AdminSolutionsRoute
+  '/admin/statistics': typeof AdminStatisticsRoute
+  '/admin/team': typeof AdminTeamRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -50,15 +138,71 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/industries': typeof AdminIndustriesRoute
+  '/admin/knowledge': typeof AdminKnowledgeRoute
+  '/admin/partners': typeof AdminPartnersRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/projects': typeof AdminProjectsRoute
+  '/admin/solutions': typeof AdminSolutionsRoute
+  '/admin/statistics': typeof AdminStatisticsRoute
+  '/admin/team': typeof AdminTeamRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin_/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin/login' | '/admin/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/admin/categories'
+    | '/admin/faqs'
+    | '/admin/industries'
+    | '/admin/knowledge'
+    | '/admin/partners'
+    | '/admin/products'
+    | '/admin/projects'
+    | '/admin/solutions'
+    | '/admin/statistics'
+    | '/admin/team'
+    | '/admin/testimonials'
+    | '/admin/login'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/login' | '/admin'
-  id: '__root__' | '/' | '/admin' | '/admin_/login' | '/admin/'
+  to:
+    | '/'
+    | '/admin/categories'
+    | '/admin/faqs'
+    | '/admin/industries'
+    | '/admin/knowledge'
+    | '/admin/partners'
+    | '/admin/products'
+    | '/admin/projects'
+    | '/admin/solutions'
+    | '/admin/statistics'
+    | '/admin/team'
+    | '/admin/testimonials'
+    | '/admin/login'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/admin/categories'
+    | '/admin/faqs'
+    | '/admin/industries'
+    | '/admin/knowledge'
+    | '/admin/partners'
+    | '/admin/products'
+    | '/admin/projects'
+    | '/admin/solutions'
+    | '/admin/statistics'
+    | '/admin/team'
+    | '/admin/testimonials'
+    | '/admin_/login'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -90,6 +234,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/faqs': {
+      id: '/admin/faqs'
+      path: '/faqs'
+      fullPath: '/admin/faqs'
+      preLoaderRoute: typeof AdminFaqsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/industries': {
+      id: '/admin/industries'
+      path: '/industries'
+      fullPath: '/admin/industries'
+      preLoaderRoute: typeof AdminIndustriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/knowledge': {
+      id: '/admin/knowledge'
+      path: '/knowledge'
+      fullPath: '/admin/knowledge'
+      preLoaderRoute: typeof AdminKnowledgeRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/partners': {
+      id: '/admin/partners'
+      path: '/partners'
+      fullPath: '/admin/partners'
+      preLoaderRoute: typeof AdminPartnersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/projects': {
+      id: '/admin/projects'
+      path: '/projects'
+      fullPath: '/admin/projects'
+      preLoaderRoute: typeof AdminProjectsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/solutions': {
+      id: '/admin/solutions'
+      path: '/solutions'
+      fullPath: '/admin/solutions'
+      preLoaderRoute: typeof AdminSolutionsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/statistics': {
+      id: '/admin/statistics'
+      path: '/statistics'
+      fullPath: '/admin/statistics'
+      preLoaderRoute: typeof AdminStatisticsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/team': {
+      id: '/admin/team'
+      path: '/team'
+      fullPath: '/admin/team'
+      preLoaderRoute: typeof AdminTeamRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/testimonials': {
+      id: '/admin/testimonials'
+      path: '/testimonials'
+      fullPath: '/admin/testimonials'
+      preLoaderRoute: typeof AdminTestimonialsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin_/login': {
       id: '/admin_/login'
       path: '/admin/login'
@@ -101,10 +322,32 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
+  AdminFaqsRoute: typeof AdminFaqsRoute
+  AdminIndustriesRoute: typeof AdminIndustriesRoute
+  AdminKnowledgeRoute: typeof AdminKnowledgeRoute
+  AdminPartnersRoute: typeof AdminPartnersRoute
+  AdminProductsRoute: typeof AdminProductsRoute
+  AdminProjectsRoute: typeof AdminProjectsRoute
+  AdminSolutionsRoute: typeof AdminSolutionsRoute
+  AdminStatisticsRoute: typeof AdminStatisticsRoute
+  AdminTeamRoute: typeof AdminTeamRoute
+  AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminCategoriesRoute: AdminCategoriesRoute,
+  AdminFaqsRoute: AdminFaqsRoute,
+  AdminIndustriesRoute: AdminIndustriesRoute,
+  AdminKnowledgeRoute: AdminKnowledgeRoute,
+  AdminPartnersRoute: AdminPartnersRoute,
+  AdminProductsRoute: AdminProductsRoute,
+  AdminProjectsRoute: AdminProjectsRoute,
+  AdminSolutionsRoute: AdminSolutionsRoute,
+  AdminStatisticsRoute: AdminStatisticsRoute,
+  AdminTeamRoute: AdminTeamRoute,
+  AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
