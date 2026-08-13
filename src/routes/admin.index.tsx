@@ -19,7 +19,7 @@ function MetricCard({
 }: {
   label: string;
   value: number | undefined;
-  hint?: string;
+  hint?: string | undefined;
 }) {
   return (
     <div className="rounded-xl border border-border bg-card p-5">

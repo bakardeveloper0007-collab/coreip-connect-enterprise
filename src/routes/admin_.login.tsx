@@ -8,11 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authService } from "@/services/auth";
 
-export const Route = createFileRoute("/admin/login")({
+export const Route = createFileRoute("/admin_/login")({
   ssr: false,
-  validateSearch: (search: Record<string, unknown>) => ({
-    denied: search["denied"] === true || search["denied"] === "true" ? true : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { denied?: boolean } =>
+    search["denied"] === true || search["denied"] === "true" ? { denied: true } : {},
   head: () => ({
     meta: [
       { title: "Sign in — CoreIP Admin" },
