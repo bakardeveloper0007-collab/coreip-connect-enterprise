@@ -47,18 +47,21 @@ function GroupEditor({ groupKey }: { groupKey: SettingsKey }) {
     queryFn: () => getWebsiteSettings(),
   });
 
-  const fallback = SETTINGS_FALLBACK[groupKey] as Record<string, unknown>;
+  const fallback = SETTINGS_FALLBACK[groupKey] as unknown as Record<string, unknown>;
   const [values, setValues] = useState<Record<string, unknown>>(fallback);
 
   useEffect(() => {
     if (data) {
-      setValues({ ...fallback, ...((data[groupKey] as Record<string, unknown>) ?? {}) });
+      setValues({
+        ...fallback,
+        ...((data[groupKey] as unknown as Record<string, unknown> | undefined) ?? {}),
+      });
     }
   }, [data, groupKey]);
 
   const save = useMutation({
     mutationFn: () =>
-      updateSetting(groupKey, values as WebsiteSettings[typeof groupKey]),
+      updateSetting(groupKey, values as unknown as WebsiteSettings[typeof groupKey]),
     onSuccess: () => {
       toast.success("Settings saved");
       queryClient.invalidateQueries({ queryKey: ["settings"] });

@@ -22,6 +22,7 @@ import { Route as AdminMediaRouteImport } from './routes/admin.media'
 import { Route as AdminPartnersRouteImport } from './routes/admin.partners'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminSolutionsRouteImport } from './routes/admin.solutions'
 import { Route as AdminStatisticsRouteImport } from './routes/admin.statistics'
 import { Route as AdminTeamRouteImport } from './routes/admin.team'
@@ -93,6 +94,11 @@ const AdminProjectsRoute = AdminProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSolutionsRoute = AdminSolutionsRouteImport.update({
   id: '/solutions',
   path: '/solutions',
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/projects': typeof AdminProjectsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/solutions': typeof AdminSolutionsRoute
   '/admin/statistics': typeof AdminStatisticsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -151,6 +158,7 @@ export interface FileRoutesByTo {
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/projects': typeof AdminProjectsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/solutions': typeof AdminSolutionsRoute
   '/admin/statistics': typeof AdminStatisticsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/projects': typeof AdminProjectsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/solutions': typeof AdminSolutionsRoute
   '/admin/statistics': typeof AdminStatisticsRoute
   '/admin/team': typeof AdminTeamRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/admin/partners'
     | '/admin/products'
     | '/admin/projects'
+    | '/admin/settings'
     | '/admin/solutions'
     | '/admin/statistics'
     | '/admin/team'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/admin/partners'
     | '/admin/products'
     | '/admin/projects'
+    | '/admin/settings'
     | '/admin/solutions'
     | '/admin/statistics'
     | '/admin/team'
@@ -233,6 +244,7 @@ export interface FileRouteTypes {
     | '/admin/partners'
     | '/admin/products'
     | '/admin/projects'
+    | '/admin/settings'
     | '/admin/solutions'
     | '/admin/statistics'
     | '/admin/team'
@@ -340,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjectsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/solutions': {
       id: '/admin/solutions'
       path: '/solutions'
@@ -389,6 +408,7 @@ interface AdminRouteChildren {
   AdminPartnersRoute: typeof AdminPartnersRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AdminProjectsRoute: typeof AdminProjectsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSolutionsRoute: typeof AdminSolutionsRoute
   AdminStatisticsRoute: typeof AdminStatisticsRoute
   AdminTeamRoute: typeof AdminTeamRoute
@@ -407,6 +427,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPartnersRoute: AdminPartnersRoute,
   AdminProductsRoute: AdminProductsRoute,
   AdminProjectsRoute: AdminProjectsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminSolutionsRoute: AdminSolutionsRoute,
   AdminStatisticsRoute: AdminStatisticsRoute,
   AdminTeamRoute: AdminTeamRoute,
