@@ -17,6 +17,7 @@ import {
   Settings,
   Sparkles,
   Users,
+  UserCog,
   Handshake,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
@@ -79,6 +80,7 @@ export const ADMIN_NAV: NavGroup[] = [
     items: [
       { label: "Media library", to: "/admin/media", icon: Image, permission: "media:manage" },
       { label: "Settings", to: "/admin/settings", icon: Settings, permission: "settings:manage" },
+      { label: "Users & roles", to: "/admin/users", icon: UserCog, permission: "users:manage" },
       { label: "Activity log", to: "/admin/logs", icon: Activity, permission: "logs:view" },
     ],
   },
