@@ -53,7 +53,7 @@ export type Permission =
   | "users:manage"
   | "logs:view";
 
-const ROLE_PERMISSIONS: Record<AppRole, Permission[]> = {
+export const ROLE_PERMISSIONS: Record<AppRole, Permission[]> = {
   super_admin: [
     "content:manage",
     "products:manage",
