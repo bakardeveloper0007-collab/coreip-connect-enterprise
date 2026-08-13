@@ -57,3 +57,52 @@ export const createStaffUser = createServerFn({ method: "POST" })
 
     return { id: userId, email: data.email };
   });
+
+/** True once at least one staff role exists — drives the one-time setup screen. */
+export const staffExists = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { count, error } = await supabaseAdmin
+    .from("user_roles")
+    .select("id", { count: "exact", head: true });
+  if (error) throw new Error(error.message);
+  return { exists: (count ?? 0) > 0 };
+});
+
+/**
+ * One-time bootstrap: creates the very first Super Admin. Refuses to run once
+ * any staff role exists, so it closes itself permanently after first use.
+ */
+export const bootstrapFirstAdmin = createServerFn({ method: "POST" })
+  .inputValidator((data: { email: string; password: string; fullName?: string }) => {
+    const email = String(data.email ?? "").trim().toLowerCase();
+    const password = String(data.password ?? "");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error("A valid email is required");
+    if (password.length < 10) throw new Error("Password must be at least 10 characters");
+    return { email, password, fullName: String(data.fullName ?? "").trim() };
+  })
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { count, error: countError } = await supabaseAdmin
+      .from("user_roles")
+      .select("id", { count: "exact", head: true });
+    if (countError) throw new Error(countError.message);
+    if ((count ?? 0) > 0) throw new Error("Admin setup has already been completed");
+
+    const created = await supabaseAdmin.auth.admin.createUser({
+      email: data.email,
+      password: data.password,
+      email_confirm: true,
+      user_metadata: { full_name: data.fullName || data.email },
+    });
+    if (created.error || !created.data.user) {
+      throw new Error(created.error?.message ?? "Could not create the account");
+    }
+
+    const { error: roleError } = await supabaseAdmin
+      .from("user_roles")
+      .insert({ user_id: created.data.user.id, role: "super_admin" });
+    if (roleError) throw new Error(roleError.message);
+
+    return { ok: true as const };
+  });
