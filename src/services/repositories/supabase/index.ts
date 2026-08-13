@@ -124,7 +124,7 @@ export const settingsRepository = {
       .eq("key", key)
       .maybeSingle();
     if (error) throw new Error(error.message);
-    return (data?.value as WebsiteSettings[K]) ?? null;
+    return (data?.value as unknown as WebsiteSettings[K]) ?? null;
   },
 
   async set<K extends SettingsKey>(key: K, value: WebsiteSettings[K]): Promise<void> {
