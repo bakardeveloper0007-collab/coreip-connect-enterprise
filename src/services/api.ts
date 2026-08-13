@@ -265,7 +265,7 @@ export async function logActivity(input: {
   action: string;
   entity: string;
   entityId?: string;
-  entityLabel?: string;
+  entityLabel?: string | undefined;
   metadata?: Record<string, unknown>;
 }): Promise<void> {
   try {
