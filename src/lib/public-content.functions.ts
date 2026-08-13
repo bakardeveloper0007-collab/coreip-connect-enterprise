@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 
+import type { ContactInfo, SeoDefaults } from "@/models";
 import type {
   Industry,
   ProductWithCategory,
@@ -106,7 +107,11 @@ export const fetchSeoDefaults = createServerFn({ method: "GET" }).handler(async 
     .from("website_settings")
     .select("key,value")
     .in("key", ["seo_defaults", "contact_info"]);
-  const map: Record<string, unknown> = {};
-  for (const row of data ?? []) map[row.key] = row.value;
-  return map;
+  let seo: SeoDefaults | null = null;
+  let contact: ContactInfo | null = null;
+  for (const row of data ?? []) {
+    if (row.key === "seo_defaults") seo = row.value as unknown as SeoDefaults;
+    if (row.key === "contact_info") contact = row.value as unknown as ContactInfo;
+  }
+  return { seo, contact };
 });
