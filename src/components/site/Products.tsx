@@ -1,12 +1,59 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { publicQueries } from "@/services/queries";
 import { Reveal } from "./Reveal";
 import { PRODUCT_GROUPS } from "./data";
 
+interface DisplayItem {
+  name: string;
+  value: string;
+  caps: string[];
+  image?: string | null;
+}
+
+interface DisplayGroup {
+  group: string;
+  items: DisplayItem[];
+}
+
 export function Products() {
-  const [active, setActive] = useState(PRODUCT_GROUPS[0]!.group);
-  const group = PRODUCT_GROUPS.find((g) => g.group === active) ?? PRODUCT_GROUPS[0]!;
+  const { data: categories } = useQuery(publicQueries.categories());
+  const { data: products } = useQuery(publicQueries.products());
+
+  const groups = useMemo<DisplayGroup[]>(() => {
+    if (!products?.length) return PRODUCT_GROUPS as DisplayGroup[];
+
+    const byCategory = new Map<string, DisplayItem[]>();
+    const order: string[] = [];
+    for (const category of categories ?? []) {
+      order.push(category.name);
+      byCategory.set(category.name, []);
+    }
+
+    for (const product of products) {
+      const label = product.category?.name ?? "Other";
+      if (!byCategory.has(label)) {
+        byCategory.set(label, []);
+        order.push(label);
+      }
+      byCategory.get(label)!.push({
+        name: product.name,
+        value: product.short_description ?? "",
+        caps: (product.features ?? []).slice(0, 3),
+        image: product.image_url,
+      });
+    }
+
+    return order
+      .map((label) => ({ group: label, items: byCategory.get(label) ?? [] }))
+      .filter((g) => g.items.length > 0);
+  }, [categories, products]);
+
+  const [active, setActive] = useState<string | null>(null);
+  const group = groups.find((g) => g.group === active) ?? groups[0];
+  if (!group) return null;
 
   return (
     <section id="products" className="section-y bg-surface">
@@ -25,15 +72,15 @@ export function Products() {
         </Reveal>
 
         <div className="mt-10 flex flex-wrap gap-2" role="tablist" aria-label="Product categories">
-          {PRODUCT_GROUPS.map((g) => (
+          {groups.map((g) => (
             <button
               key={g.group}
               role="tab"
-              aria-selected={active === g.group}
+              aria-selected={group.group === g.group}
               onClick={() => setActive(g.group)}
               className={cn(
                 "cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-colors",
-                active === g.group
+                group.group === g.group
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card text-muted-foreground hover:border-accent/50 hover:text-foreground",
               )}
@@ -51,7 +98,16 @@ export function Products() {
               style={{ animationDelay: `${i * 70}ms` }}
             >
               <div className="relative mb-5 h-32 overflow-hidden rounded-lg bg-[image:var(--gradient-navy)]">
-                <div className="bg-grid-faint absolute inset-0 opacity-50" />
+                {p.image ? (
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    loading="lazy"
+                    className="absolute inset-0 size-full object-cover opacity-90"
+                  />
+                ) : (
+                  <div className="bg-grid-faint absolute inset-0 opacity-50" />
+                )}
                 <span className="absolute bottom-3 left-4 font-display text-xs font-semibold uppercase tracking-[0.16em] text-cyan">
                   {group.group}
                 </span>
