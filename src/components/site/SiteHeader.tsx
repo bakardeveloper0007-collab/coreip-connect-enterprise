@@ -151,26 +151,24 @@ export function SiteHeader() {
           </div>
         )}
         {open === "Products" && (
-          <div className="container-x grid grid-cols-4 gap-8 py-8">
-            {productGroups.map((g) => (
-              <div key={g.group}>
-                <p className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-cyan">
-                  {g.group}
-                </p>
-                <ul className="mt-3 space-y-2">
-                  {g.items.map((i) => (
-                    <li key={i.name}>
-                      <a
-                        href="#products"
-                        onClick={() => setOpen(null)}
-                        className="text-sm text-navy-foreground/75 transition-colors hover:text-cyan"
-                      >
-                        {i.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="container-x grid grid-cols-3 gap-x-10 gap-y-4 py-8">
+            {productCategories.map((c) => (
+              <a
+                key={c.name}
+                href="#products"
+                onClick={() => setOpen(null)}
+                className="group rounded-lg border border-transparent p-4 transition-colors hover:border-cyan/30 hover:bg-navy-foreground/5"
+              >
+                <p className="font-display text-sm font-semibold text-navy-foreground">{c.name}</p>
+                {c.description && (
+                  <p className="mt-1.5 text-sm leading-relaxed text-navy-foreground/60">
+                    {c.description}
+                  </p>
+                )}
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-cyan opacity-0 transition-opacity group-hover:opacity-100">
+                  View range <ArrowRight className="size-3" />
+                </span>
+              </a>
             ))}
           </div>
         )}
@@ -203,14 +201,14 @@ export function SiteHeader() {
                 Products
               </p>
               <ul className="mt-2 grid grid-cols-2 gap-2">
-                {productGroups.flatMap((g) => g.items).map((i) => (
-                  <li key={i.name}>
+                {productCategories.map((c) => (
+                  <li key={c.name}>
                     <a
                       href="#products"
                       onClick={() => setMobile(false)}
                       className="text-sm text-navy-foreground/80"
                     >
-                      {i.name}
+                      {c.name}
                     </a>
                   </li>
                 ))}
