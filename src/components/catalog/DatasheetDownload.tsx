@@ -45,6 +45,7 @@ export function DatasheetDownload({
   const [requestId, setRequestId] = useState<string | null>(null);
   const [verifiedUrl, setVerifiedUrl] = useState<string | null>(null);
   const [delivered, setDelivered] = useState(true);
+  const [fallbackCode, setFallbackCode] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const filename = `${productSlug}-datasheet.pdf`;
@@ -77,6 +78,7 @@ export function DatasheetDownload({
       }
       setRequestId(result.requestId);
       setDelivered(result.delivered);
+      setFallbackCode(result.fallbackCode ?? null);
       setStep("code");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -109,6 +111,7 @@ export function DatasheetDownload({
         if (!next) {
           setStep("details");
           setRequestId(null);
+          setFallbackCode(null);
           setError(null);
         }
       }}
@@ -175,8 +178,11 @@ export function DatasheetDownload({
           >
             {!delivered && (
               <p className="rounded-md border border-border bg-surface p-3 text-xs text-muted-foreground">
-                Email delivery is still being activated for this site, so the code may not arrive
-                yet. Please contact our sales team and we'll send the datasheet directly.
+                Email delivery is still being activated for this site, so your code is shown here
+                for now:{" "}
+                <span className="font-mono text-sm font-semibold tracking-[0.3em] text-foreground">
+                  {fallbackCode ?? "—"}
+                </span>
               </p>
             )}
             <label className="grid gap-1.5 text-sm">
