@@ -46,6 +46,7 @@ export function SiteHeader() {
         description: c.description ?? "",
         count: counts.get(c.name) ?? 0,
         group: c.group_name === "Software" ? "Software" : "Hardware",
+        image: c.image_url ?? null,
       }));
     if (fromCms.length) return fromCms;
     return PRODUCT_GROUPS.map((g) => ({
@@ -53,12 +54,20 @@ export function SiteHeader() {
       description: "",
       count: g.items.length,
       group: /software|nms|management/i.test(g.group) ? "Software" : "Hardware",
+      image: null as string | null,
     }));
   })();
 
   const productColumns = (["Software", "Hardware"] as const).map((group) => ({
     group,
     items: productCategories.filter((c) => c.group === group),
+  }));
+
+  // Third column: highlighted individual products (newest published, max 3).
+  const hotProducts = (products ?? []).slice(0, 3).map((p) => ({
+    name: p.name,
+    description: p.short_description ?? "",
+    image: p.image_url ?? null,
   }));
 
   useEffect(() => {
@@ -162,13 +171,13 @@ export function SiteHeader() {
           </div>
         )}
         {open === "Products" && (
-          <div className="container-x grid grid-cols-2 gap-x-12 py-8">
+          <div className="container-x grid max-h-[32rem] grid-cols-3 gap-x-10 overflow-y-auto py-8">
             {productColumns.map((col) => (
               <div key={col.group}>
                 <p className="border-b border-navy-foreground/10 pb-3 font-display text-base font-bold text-navy-foreground">
                   {col.group}
                 </p>
-                <div className="mt-3 grid gap-1">
+                <div className="mt-2 grid divide-y divide-navy-foreground/10">
                   {col.items.length === 0 && (
                     <p className="p-4 text-sm text-navy-foreground/50">Coming soon.</p>
                   )}
@@ -177,22 +186,78 @@ export function SiteHeader() {
                       key={c.name}
                       href="#products"
                       onClick={() => setOpen(null)}
-                      className="group rounded-lg border border-transparent p-3 transition-colors hover:border-cyan/30 hover:bg-navy-foreground/5"
+                      className="group flex gap-3 rounded-lg p-3 transition-colors hover:bg-navy-foreground/5"
                     >
-                      <p className="flex items-center gap-2 font-display text-sm font-semibold text-navy-foreground">
-                        {c.name}
-                        <ArrowRight className="size-3 text-cyan opacity-0 transition-opacity group-hover:opacity-100" />
-                      </p>
-                      {c.description && (
-                        <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-navy-foreground/60">
-                          {c.description}
-                        </p>
+                      {c.image && (
+                        <img
+                          src={c.image}
+                          alt={c.name}
+                          loading="lazy"
+                          className="h-12 w-16 shrink-0 rounded border border-navy-foreground/10 bg-navy-foreground/5 object-cover"
+                        />
                       )}
+                      <span className="min-w-0">
+                        <span className="flex items-center gap-2 font-display text-sm font-semibold text-cyan">
+                          {c.name}
+                          <ArrowRight className="size-3 opacity-0 transition-opacity group-hover:opacity-100" />
+                        </span>
+                        {c.description && (
+                          <span className="mt-1 line-clamp-2 block text-sm leading-relaxed text-navy-foreground/60">
+                            {c.description}
+                          </span>
+                        )}
+                      </span>
                     </a>
                   ))}
                 </div>
+                {col.items.length > 0 && (
+                  <a
+                    href="#products"
+                    onClick={() => setOpen(null)}
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-md bg-[image:var(--gradient-brand)] px-4 py-2 text-xs font-semibold text-cyan-foreground"
+                  >
+                    View All <ArrowRight className="size-3" />
+                  </a>
+                )}
               </div>
             ))}
+            <div>
+              <p className="border-b border-navy-foreground/10 pb-3 font-display text-base font-bold text-navy-foreground">
+                Hot Products
+              </p>
+              <div className="mt-2 grid divide-y divide-navy-foreground/10">
+                {hotProducts.length === 0 && (
+                  <p className="p-4 text-sm text-navy-foreground/50">Coming soon.</p>
+                )}
+                {hotProducts.map((p) => (
+                  <a
+                    key={p.name}
+                    href="#products"
+                    onClick={() => setOpen(null)}
+                    className="group flex gap-3 rounded-lg p-3 transition-colors hover:bg-navy-foreground/5"
+                  >
+                    {p.image && (
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        loading="lazy"
+                        className="h-12 w-16 shrink-0 rounded border border-navy-foreground/10 bg-navy-foreground/5 object-cover"
+                      />
+                    )}
+                    <span className="min-w-0">
+                      <span className="block font-display text-sm font-semibold text-cyan">
+                        {p.name}
+                      </span>
+                      {p.description && (
+                        <span className="mt-1 line-clamp-3 block text-sm leading-relaxed text-navy-foreground/60">
+                          {p.description}
+                        </span>
+                      )}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -243,6 +308,26 @@ export function SiteHeader() {
                   </ul>
                 </div>
               ))}
+              {hotProducts.length > 0 && (
+                <div className="mt-3">
+                  <p className="font-display text-sm font-semibold text-navy-foreground">
+                    Hot Products
+                  </p>
+                  <ul className="mt-1.5 grid gap-2">
+                    {hotProducts.map((p) => (
+                      <li key={p.name}>
+                        <a
+                          href="#products"
+                          onClick={() => setMobile(false)}
+                          className="text-sm text-navy-foreground/80"
+                        >
+                          {p.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
             <ul className="grid gap-2 border-t border-navy-foreground/10 pt-4">
               {links.map((l) => (
