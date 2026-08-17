@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { publicQueries } from "@/services/queries";
 import { SOLUTIONS, PRODUCT_GROUPS } from "./data";
 
 function Logo() {
@@ -21,6 +23,36 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
+  const { data: services } = useQuery(publicQueries.services());
+  const { data: categories } = useQuery(publicQueries.categories());
+  const { data: products } = useQuery(publicQueries.products());
+
+  // Menus are CMS-driven: published Solutions and Products grouped by category.
+  const solutionLinks = services?.length
+    ? services.map((s) => ({ title: s.name, description: s.short_description ?? "" }))
+    : SOLUTIONS.map((s) => ({ title: s.title, description: s.description }));
+
+  const productGroups = products?.length
+    ? (() => {
+        const order: string[] = [];
+        const map = new Map<string, { name: string }[]>();
+        for (const c of categories ?? []) {
+          order.push(c.name);
+          map.set(c.name, []);
+        }
+        for (const p of products) {
+          const label = p.category?.name ?? "Other";
+          if (!map.has(label)) {
+            map.set(label, []);
+            order.push(label);
+          }
+          map.get(label)!.push({ name: p.name });
+        }
+        return order
+          .map((group) => ({ group, items: map.get(group) ?? [] }))
+          .filter((g) => g.items.length > 0);
+      })()
+    : PRODUCT_GROUPS.map((g) => ({ group: g.group, items: g.items.map((i) => ({ name: i.name })) }));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -104,7 +136,7 @@ export function SiteHeader() {
       >
         {open === "Solutions" && (
           <div className="container-x grid grid-cols-3 gap-x-10 gap-y-4 py-8">
-            {SOLUTIONS.map((s) => (
+            {solutionLinks.map((s) => (
               <a
                 key={s.title}
                 href="#solutions"
@@ -124,7 +156,7 @@ export function SiteHeader() {
         )}
         {open === "Products" && (
           <div className="container-x grid grid-cols-4 gap-8 py-8">
-            {PRODUCT_GROUPS.map((g) => (
+            {productGroups.map((g) => (
               <div key={g.group}>
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-cyan">
                   {g.group}
@@ -157,7 +189,7 @@ export function SiteHeader() {
                 Solutions
               </p>
               <ul className="mt-2 space-y-2">
-                {SOLUTIONS.map((s) => (
+                {solutionLinks.map((s) => (
                   <li key={s.title}>
                     <a
                       href="#solutions"
@@ -175,7 +207,7 @@ export function SiteHeader() {
                 Products
               </p>
               <ul className="mt-2 grid grid-cols-2 gap-2">
-                {PRODUCT_GROUPS.flatMap((g) => g.items).map((i) => (
+                {productGroups.flatMap((g) => g.items).map((i) => (
                   <li key={i.name}>
                     <a
                       href="#products"
