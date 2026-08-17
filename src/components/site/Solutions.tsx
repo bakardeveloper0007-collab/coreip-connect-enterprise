@@ -1,5 +1,7 @@
-import { ArrowRight, Cloud, Network, PhoneCall, Radio, ShieldCheck } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowRight, Cloud, Network, PhoneCall, Radio, ShieldCheck, Sparkles } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { publicQueries } from "@/services/queries";
 import { SOLUTIONS } from "./data";
 
 const ICONS = {
@@ -11,6 +13,17 @@ const ICONS = {
 } as const;
 
 export function Solutions() {
+  const { data: services } = useQuery(publicQueries.services());
+
+  const items = services?.length
+    ? services.map((s) => ({
+        title: s.name,
+        description: s.short_description ?? "",
+        points: (s.features ?? []).slice(0, 4),
+        icon: s.icon ?? "",
+      }))
+    : SOLUTIONS.map((s) => ({ ...s, points: [...s.points] }));
+
   return (
     <section id="solutions" className="section-y bg-background">
       <div className="container-x">
@@ -26,8 +39,8 @@ export function Solutions() {
         </Reveal>
 
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {SOLUTIONS.map((s, i) => {
-            const Icon = ICONS[s.icon as keyof typeof ICONS];
+          {items.map((s, i) => {
+            const Icon = ICONS[s.icon as keyof typeof ICONS] ?? Sparkles;
             return (
               <Reveal
                 key={s.title}

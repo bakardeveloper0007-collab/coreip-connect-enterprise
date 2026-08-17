@@ -1,5 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { publicQueries } from "@/services/queries";
 import manufacturing from "@/assets/ind-manufacturing.jpg";
 import warehouse from "@/assets/ind-warehouse.jpg";
 import healthcare from "@/assets/ind-healthcare.jpg";
@@ -47,6 +49,16 @@ const INDUSTRIES = [
 ];
 
 export function Industries() {
+  const { data } = useQuery(publicQueries.industries());
+  const items = data?.length
+    ? data.map((ind) => ({
+        name: ind.name,
+        image: ind.hero_image_url ?? manufacturing,
+        alt: ind.name,
+        copy: ind.description ?? "",
+      }))
+    : INDUSTRIES;
+
   return (
     <section id="industries" className="section-y bg-background">
       <div className="container-x">
@@ -62,7 +74,7 @@ export function Industries() {
         </Reveal>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {INDUSTRIES.map((ind, i) => (
+          {items.map((ind, i) => (
             <Reveal
               key={ind.name}
               delay={i * 70}
