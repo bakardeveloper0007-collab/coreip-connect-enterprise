@@ -107,6 +107,59 @@ export type Database = {
         }
         Relationships: []
       }
+      datasheet_requests: {
+        Row: {
+          attempts: number
+          code_hash: string
+          company: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          name: string | null
+          phone: string | null
+          product_id: string | null
+          product_name: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          attempts?: number
+          code_hash: string
+          company?: string | null
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          name?: string | null
+          phone?: string | null
+          product_id?: string | null
+          product_name?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          attempts?: number
+          code_hash?: string
+          company?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          name?: string | null
+          phone?: string | null
+          product_id?: string | null
+          product_name?: string | null
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "datasheet_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       faqs: {
         Row: {
           answer: string
@@ -407,6 +460,7 @@ export type Database = {
           created_at: string
           cta_link: string | null
           cta_text: string | null
+          datasheet_access: string
           features: string[]
           gallery: string[]
           id: string
@@ -434,6 +488,7 @@ export type Database = {
           created_at?: string
           cta_link?: string | null
           cta_text?: string | null
+          datasheet_access?: string
           features?: string[]
           gallery?: string[]
           id?: string
@@ -461,6 +516,7 @@ export type Database = {
           created_at?: string
           cta_link?: string | null
           cta_text?: string | null
+          datasheet_access?: string
           features?: string[]
           gallery?: string[]
           id?: string
