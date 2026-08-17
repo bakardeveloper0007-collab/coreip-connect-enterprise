@@ -29,6 +29,13 @@ import { Route as AdminTeamRouteImport } from './routes/admin.team'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminLoginRouteImport } from './routes/admin_.login'
+import { Route as HardwareIndexRouteImport } from './routes/hardware.index'
+import { Route as HotProductsIndexRouteImport } from './routes/hot-products.index'
+import { Route as SoftwareIndexRouteImport } from './routes/software.index'
+import { Route as HardwareCategoryIndexRouteImport } from './routes/hardware.$category.index'
+import { Route as HardwareCategoryProductRouteImport } from './routes/hardware.$category.$product'
+import { Route as SoftwareCategoryIndexRouteImport } from './routes/software.$category.index'
+import { Route as SoftwareCategoryProductRouteImport } from './routes/software.$category.$product'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -130,6 +137,41 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HardwareIndexRoute = HardwareIndexRouteImport.update({
+  id: '/hardware/',
+  path: '/hardware/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HotProductsIndexRoute = HotProductsIndexRouteImport.update({
+  id: '/hot-products/',
+  path: '/hot-products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoftwareIndexRoute = SoftwareIndexRouteImport.update({
+  id: '/software/',
+  path: '/software/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HardwareCategoryIndexRoute = HardwareCategoryIndexRouteImport.update({
+  id: '/hardware/$category/',
+  path: '/hardware/$category/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HardwareCategoryProductRoute = HardwareCategoryProductRouteImport.update({
+  id: '/hardware/$category/$product',
+  path: '/hardware/$category/$product',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoftwareCategoryIndexRoute = SoftwareCategoryIndexRouteImport.update({
+  id: '/software/$category/',
+  path: '/software/$category/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoftwareCategoryProductRoute = SoftwareCategoryProductRouteImport.update({
+  id: '/software/$category/$product',
+  path: '/software/$category/$product',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -152,6 +194,13 @@ export interface FileRoutesByFullPath {
   '/admin/users': typeof AdminUsersRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
+  '/hardware/': typeof HardwareIndexRoute
+  '/hot-products/': typeof HotProductsIndexRoute
+  '/software/': typeof SoftwareIndexRoute
+  '/hardware/$category/$product': typeof HardwareCategoryProductRoute
+  '/software/$category/$product': typeof SoftwareCategoryProductRoute
+  '/hardware/$category/': typeof HardwareCategoryIndexRoute
+  '/software/$category/': typeof SoftwareCategoryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -173,6 +222,13 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AdminUsersRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin': typeof AdminIndexRoute
+  '/hardware': typeof HardwareIndexRoute
+  '/hot-products': typeof HotProductsIndexRoute
+  '/software': typeof SoftwareIndexRoute
+  '/hardware/$category/$product': typeof HardwareCategoryProductRoute
+  '/software/$category/$product': typeof SoftwareCategoryProductRoute
+  '/hardware/$category': typeof HardwareCategoryIndexRoute
+  '/software/$category': typeof SoftwareCategoryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -196,6 +252,13 @@ export interface FileRoutesById {
   '/admin/users': typeof AdminUsersRoute
   '/admin_/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
+  '/hardware/': typeof HardwareIndexRoute
+  '/hot-products/': typeof HotProductsIndexRoute
+  '/software/': typeof SoftwareIndexRoute
+  '/hardware/$category/$product': typeof HardwareCategoryProductRoute
+  '/software/$category/$product': typeof SoftwareCategoryProductRoute
+  '/hardware/$category/': typeof HardwareCategoryIndexRoute
+  '/software/$category/': typeof SoftwareCategoryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -220,6 +283,13 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/admin/login'
     | '/admin/'
+    | '/hardware/'
+    | '/hot-products/'
+    | '/software/'
+    | '/hardware/$category/$product'
+    | '/software/$category/$product'
+    | '/hardware/$category/'
+    | '/software/$category/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -241,6 +311,13 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/admin/login'
     | '/admin'
+    | '/hardware'
+    | '/hot-products'
+    | '/software'
+    | '/hardware/$category/$product'
+    | '/software/$category/$product'
+    | '/hardware/$category'
+    | '/software/$category'
   id:
     | '__root__'
     | '/'
@@ -263,12 +340,26 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/admin_/login'
     | '/admin/'
+    | '/hardware/'
+    | '/hot-products/'
+    | '/software/'
+    | '/hardware/$category/$product'
+    | '/software/$category/$product'
+    | '/hardware/$category/'
+    | '/software/$category/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
+  HardwareIndexRoute: typeof HardwareIndexRoute
+  HotProductsIndexRoute: typeof HotProductsIndexRoute
+  SoftwareIndexRoute: typeof SoftwareIndexRoute
+  HardwareCategoryProductRoute: typeof HardwareCategoryProductRoute
+  SoftwareCategoryProductRoute: typeof SoftwareCategoryProductRoute
+  HardwareCategoryIndexRoute: typeof HardwareCategoryIndexRoute
+  SoftwareCategoryIndexRoute: typeof SoftwareCategoryIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -413,6 +504,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hardware/': {
+      id: '/hardware/'
+      path: '/hardware'
+      fullPath: '/hardware/'
+      preLoaderRoute: typeof HardwareIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hot-products/': {
+      id: '/hot-products/'
+      path: '/hot-products'
+      fullPath: '/hot-products/'
+      preLoaderRoute: typeof HotProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/software/': {
+      id: '/software/'
+      path: '/software'
+      fullPath: '/software/'
+      preLoaderRoute: typeof SoftwareIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hardware/$category/': {
+      id: '/hardware/$category/'
+      path: '/hardware/$category'
+      fullPath: '/hardware/$category/'
+      preLoaderRoute: typeof HardwareCategoryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hardware/$category/$product': {
+      id: '/hardware/$category/$product'
+      path: '/hardware/$category/$product'
+      fullPath: '/hardware/$category/$product'
+      preLoaderRoute: typeof HardwareCategoryProductRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/software/$category/': {
+      id: '/software/$category/'
+      path: '/software/$category'
+      fullPath: '/software/$category/'
+      preLoaderRoute: typeof SoftwareCategoryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/software/$category/$product': {
+      id: '/software/$category/$product'
+      path: '/software/$category/$product'
+      fullPath: '/software/$category/$product'
+      preLoaderRoute: typeof SoftwareCategoryProductRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -462,6 +602,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
+  HardwareIndexRoute: HardwareIndexRoute,
+  HotProductsIndexRoute: HotProductsIndexRoute,
+  SoftwareIndexRoute: SoftwareIndexRoute,
+  HardwareCategoryProductRoute: HardwareCategoryProductRoute,
+  SoftwareCategoryProductRoute: SoftwareCategoryProductRoute,
+  HardwareCategoryIndexRoute: HardwareCategoryIndexRoute,
+  SoftwareCategoryIndexRoute: SoftwareCategoryIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

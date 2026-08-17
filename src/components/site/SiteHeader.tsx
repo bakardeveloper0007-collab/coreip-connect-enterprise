@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { publicQueries } from "@/services/queries";
+import { CategoryLink, GroupLink, ProductLink } from "@/components/catalog/CatalogLinks";
+import { GROUP_SLUG, groupOf } from "@/components/catalog/catalog-utils";
 import { SOLUTIONS, PRODUCT_GROUPS } from "./data";
 
 function Logo() {
   return (
-    <a href="#top" className="flex items-center gap-2.5" aria-label="CoreIP home">
+    <Link to="/" className="flex items-center gap-2.5" aria-label="CoreIP home">
       <span className="grid h-9 w-9 place-items-center rounded-md bg-[image:var(--gradient-brand)] font-display text-sm font-bold text-cyan-foreground">
         CI
       </span>
       <span className="font-display text-lg font-bold tracking-tight text-navy-foreground">
         CORE<span className="text-cyan">IP</span>
       </span>
-    </a>
+    </Link>
   );
 }
 
@@ -43,17 +46,21 @@ export function SiteHeader() {
       .filter((c) => (counts.get(c.name) ?? 0) > 0)
       .map((c) => ({
         name: c.name,
+        slug: c.slug,
         description: c.description ?? "",
         count: counts.get(c.name) ?? 0,
-        group: c.group_name === "Software" ? "Software" : "Hardware",
+        group: groupOf(c),
         image: c.image_url ?? null,
       }));
     if (fromCms.length) return fromCms;
     return PRODUCT_GROUPS.map((g) => ({
       name: g.group,
+      slug: "",
       description: "",
       count: g.items.length,
-      group: /software|nms|management/i.test(g.group) ? "Software" : "Hardware",
+      group: (/software|nms|management/i.test(g.group) ? "Software" : "Hardware") as
+        | "Software"
+        | "Hardware",
       image: null as string | null,
     }));
   })();
@@ -68,6 +75,9 @@ export function SiteHeader() {
   const flaggedHot = (products ?? []).filter((p) => (p as { is_hot?: boolean }).is_hot);
   const hotProducts = (flaggedHot.length > 0 ? flaggedHot : (products ?? [])).slice(0, 3).map((p) => ({
     name: p.name,
+    slug: p.slug,
+    categorySlug: p.category?.slug ?? "",
+    group: GROUP_SLUG[groupOf((categories ?? []).find((c) => c.slug === p.category?.slug))],
     description: p.short_description ?? "",
     image: p.image_url ?? null,
   }));
@@ -80,11 +90,11 @@ export function SiteHeader() {
   }, []);
 
   const links = [
-    { label: "Industries", href: "#industries" },
-    { label: "Partners", href: "#partners" },
-    { label: "Company", href: "#company" },
-    { label: "Resources", href: "#deployments" },
-    { label: "Contact", href: "#contact" },
+    { label: "Industries", href: "/#industries" },
+    { label: "Partners", href: "/#partners" },
+    { label: "Company", href: "/#company" },
+    { label: "Resources", href: "/#deployments" },
+    { label: "Contact", href: "/#contact" },
   ];
 
   return (
@@ -132,7 +142,7 @@ export function SiteHeader() {
 
         <div className="hidden lg:block">
           <Button variant="hero" size="default" asChild>
-            <a href="#contact">Talk to an Expert</a>
+            <a href="/#contact">Talk to an Expert</a>
           </Button>
         </div>
 
@@ -157,7 +167,7 @@ export function SiteHeader() {
             {solutionLinks.map((s) => (
               <a
                 key={s.title}
-                href="#solutions"
+                href="/#solutions"
                 onClick={() => setOpen(null)}
                 className="group rounded-lg border border-transparent p-4 transition-colors hover:border-cyan/30 hover:bg-navy-foreground/5"
               >
@@ -184,10 +194,10 @@ export function SiteHeader() {
                     <p className="p-4 text-sm text-navy-foreground/50">Coming soon.</p>
                   )}
                   {col.items.map((c) => (
-                    <a
+                    <CategoryLink
                       key={c.name}
-                      href="#products"
-                      onClick={() => setOpen(null)}
+                      group={GROUP_SLUG[col.group]}
+                      category={c.slug}
                       className="group flex gap-3 rounded-lg p-3 transition-colors hover:bg-navy-foreground/5"
                     >
                       {c.image && (
@@ -209,33 +219,36 @@ export function SiteHeader() {
                           </span>
                         )}
                       </span>
-                    </a>
+                    </CategoryLink>
                   ))}
                 </div>
                 {col.items.length > 0 && (
-                  <a
-                    href="#products"
-                    onClick={() => setOpen(null)}
+                  <GroupLink
+                    group={GROUP_SLUG[col.group]}
                     className="mt-4 inline-flex items-center gap-1.5 rounded-md bg-[image:var(--gradient-brand)] px-4 py-2 text-xs font-semibold text-cyan-foreground"
                   >
                     View All <ArrowRight className="size-3" />
-                  </a>
+                  </GroupLink>
                 )}
               </div>
             ))}
             <div>
-              <p className="border-b border-navy-foreground/10 pb-3 font-display text-base font-bold text-navy-foreground">
+              <Link
+                to="/hot-products"
+                className="block border-b border-navy-foreground/10 pb-3 font-display text-base font-bold text-navy-foreground hover:text-cyan"
+              >
                 Hot Products
-              </p>
+              </Link>
               <div className="mt-2 grid divide-y divide-navy-foreground/10">
                 {hotProducts.length === 0 && (
                   <p className="p-4 text-sm text-navy-foreground/50">Coming soon.</p>
                 )}
                 {hotProducts.map((p) => (
-                  <a
+                  <ProductLink
                     key={p.name}
-                    href="#products"
-                    onClick={() => setOpen(null)}
+                    group={p.group}
+                    category={p.categorySlug}
+                    product={p.slug}
                     className="group flex gap-3 rounded-lg p-3 transition-colors hover:bg-navy-foreground/5"
                   >
                     {p.image && (
@@ -256,7 +269,7 @@ export function SiteHeader() {
                         </span>
                       )}
                     </span>
-                  </a>
+                  </ProductLink>
                 ))}
               </div>
             </div>
@@ -276,7 +289,7 @@ export function SiteHeader() {
                 {solutionLinks.map((s) => (
                   <li key={s.title}>
                     <a
-                      href="#solutions"
+                      href="/#solutions"
                       onClick={() => setMobile(false)}
                       className="text-sm text-navy-foreground/80"
                     >
@@ -298,13 +311,14 @@ export function SiteHeader() {
                   <ul className="mt-1.5 grid grid-cols-2 gap-2">
                     {col.items.map((c) => (
                       <li key={c.name}>
-                        <a
-                          href="#products"
+                        <CategoryLink
+                          group={GROUP_SLUG[col.group]}
+                          category={c.slug}
                           onClick={() => setMobile(false)}
                           className="text-sm text-navy-foreground/80"
                         >
                           {c.name}
-                        </a>
+                        </CategoryLink>
                       </li>
                     ))}
                   </ul>
@@ -318,13 +332,15 @@ export function SiteHeader() {
                   <ul className="mt-1.5 grid gap-2">
                     {hotProducts.map((p) => (
                       <li key={p.name}>
-                        <a
-                          href="#products"
+                        <ProductLink
+                          group={p.group}
+                          category={p.categorySlug}
+                          product={p.slug}
                           onClick={() => setMobile(false)}
                           className="text-sm text-navy-foreground/80"
                         >
                           {p.name}
-                        </a>
+                        </ProductLink>
                       </li>
                     ))}
                   </ul>
