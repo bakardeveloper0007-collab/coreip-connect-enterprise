@@ -143,9 +143,14 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <LanguageSwitcher />
-          <Button variant="hero" size="default" asChild>
-            <a href="/#contact">Talk to an Expert</a>
-          </Button>
+          <QuoteDialog
+            source="header"
+            trigger={
+              <Button variant="hero" size="default">
+                Talk to an Expert
+              </Button>
+            }
+          />
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
