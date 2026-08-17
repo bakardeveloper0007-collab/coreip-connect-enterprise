@@ -32,27 +32,23 @@ export function SiteHeader() {
     ? services.map((s) => ({ title: s.name, description: s.short_description ?? "" }))
     : SOLUTIONS.map((s) => ({ title: s.title, description: s.description }));
 
-  const productGroups = products?.length
-    ? (() => {
-        const order: string[] = [];
-        const map = new Map<string, { name: string }[]>();
-        for (const c of categories ?? []) {
-          order.push(c.name);
-          map.set(c.name, []);
-        }
-        for (const p of products) {
-          const label = p.category?.name ?? "Other";
-          if (!map.has(label)) {
-            map.set(label, []);
-            order.push(label);
-          }
-          map.get(label)!.push({ name: p.name });
-        }
-        return order
-          .map((group) => ({ group, items: map.get(group) ?? [] }))
-          .filter((g) => g.items.length > 0);
-      })()
-    : PRODUCT_GROUPS.map((g) => ({ group: g.group, items: g.items.map((i) => ({ name: i.name })) }));
+  // Navbar shows product CATEGORIES only (e.g. IP Phones, Servers, Gateways) — never models.
+  const productCategories = (() => {
+    const counts = new Map<string, number>();
+    for (const p of products ?? []) {
+      const label = p.category?.name;
+      if (label) counts.set(label, (counts.get(label) ?? 0) + 1);
+    }
+    const fromCms = (categories ?? [])
+      .filter((c) => (counts.get(c.name) ?? 0) > 0)
+      .map((c) => ({ name: c.name, description: c.description ?? "", count: counts.get(c.name) ?? 0 }));
+    if (fromCms.length) return fromCms;
+    return PRODUCT_GROUPS.map((g) => ({
+      name: g.group,
+      description: "",
+      count: g.items.length,
+    }));
+  })();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
