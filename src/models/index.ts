@@ -70,6 +70,7 @@ export interface Product extends Timestamps {
   seo_description: string | null;
   status: ContentStatus;
   sort_order: number;
+  is_hot: boolean;
 }
 
 export interface ProductWithCategory extends Product {
