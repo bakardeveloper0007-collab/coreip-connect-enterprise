@@ -43,6 +43,7 @@ export function DatasheetDownload({
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<"details" | "code" | "ready">("details");
   const [requestId, setRequestId] = useState<string | null>(null);
+  const [verifiedUrl, setVerifiedUrl] = useState<string | null>(null);
   const [delivered, setDelivered] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,6 +91,7 @@ export function DatasheetDownload({
     setError(null);
     try {
       const { url } = await verifyCode({ data: { requestId, code } });
+      setVerifiedUrl(url);
       setStep("ready");
       forceDownload(url, filename);
     } catch (err) {
@@ -200,7 +202,10 @@ export function DatasheetDownload({
             <p className="text-sm text-muted-foreground">
               Verified — your download has started. If it didn't, use the button below.
             </p>
-            <Button variant="hero" onClick={() => forceDownload(brochureUrl, filename)}>
+            <Button
+              variant="hero"
+              onClick={() => verifiedUrl && forceDownload(verifiedUrl, filename)}
+            >
               <Download className="size-4" /> Download again
             </Button>
           </div>
