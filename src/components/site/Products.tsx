@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { publicQueries } from "@/services/queries";
+import { ProductLink } from "@/components/catalog/CatalogLinks";
+import { GROUP_SLUG, groupOf } from "@/components/catalog/catalog-utils";
 import { Reveal } from "./Reveal";
 import { PRODUCT_GROUPS } from "./data";
 
@@ -11,6 +13,9 @@ interface DisplayItem {
   value: string;
   caps: string[];
   image?: string | null;
+  slug?: string;
+  categorySlug?: string;
+  group?: string;
 }
 
 interface DisplayGroup {
@@ -43,6 +48,11 @@ export function Products() {
         value: product.short_description ?? "",
         caps: (product.features ?? []).slice(0, 3),
         image: product.image_url,
+        slug: product.slug,
+        categorySlug: product.category?.slug ?? "",
+        group: GROUP_SLUG[
+          groupOf((categories ?? []).find((c) => c.slug === product.category?.slug))
+        ],
       });
     }
 
@@ -122,13 +132,25 @@ export function Products() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#contact"
-                className="mt-5 inline-flex items-center gap-1.5 border-t border-border pt-4 text-sm font-semibold text-primary transition-colors group-hover:text-accent"
-              >
-                Explore Product
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-              </a>
+              {p.slug && p.categorySlug ? (
+                <ProductLink
+                  group={p.group ?? "hardware"}
+                  category={p.categorySlug}
+                  product={p.slug}
+                  className="mt-5 inline-flex items-center gap-1.5 border-t border-border pt-4 text-sm font-semibold text-primary transition-colors group-hover:text-accent"
+                >
+                  View Details
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </ProductLink>
+              ) : (
+                <a
+                  href="/#contact"
+                  className="mt-5 inline-flex items-center gap-1.5 border-t border-border pt-4 text-sm font-semibold text-primary transition-colors group-hover:text-accent"
+                >
+                  Explore Product
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </a>
+              )}
             </article>
           ))}
         </div>
