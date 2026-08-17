@@ -2,6 +2,7 @@ import { ArrowRight, Mail, MapPin, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "./Reveal";
 import { CONTACT } from "./data";
+import { QuoteDialog } from "./QuoteDialog";
 
 export function CTASection() {
   return (
@@ -26,9 +27,14 @@ export function CTASection() {
                 Talk to an Expert <ArrowRight className="size-4" />
               </a>
             </Button>
-            <Button variant="onDark" size="xl" asChild>
-              <a href={`mailto:${CONTACT.email}?subject=Request%20a%20Quote`}>Request a Quote</a>
-            </Button>
+            <QuoteDialog
+              source="homepage-cta"
+              trigger={
+                <Button variant="onDark" size="xl">
+                  Request a Quote
+                </Button>
+              }
+            />
           </div>
         </Reveal>
 
