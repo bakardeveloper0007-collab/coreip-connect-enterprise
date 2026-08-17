@@ -3,13 +3,13 @@ import { createServerFn } from "@tanstack/react-start";
 export interface QuoteInput {
   name: string;
   email: string;
-  company?: string;
-  phone?: string;
-  country?: string;
-  requirement_type?: string;
-  product_interest?: string;
+  company?: string | undefined;
+  phone?: string | undefined;
+  country?: string | undefined;
+  requirement_type?: string | undefined;
+  product_interest?: string | undefined;
   message: string;
-  source?: string;
+  source?: string | undefined;
 }
 
 const clean = (value: unknown, max: number) => String(value ?? "").trim().slice(0, max);
