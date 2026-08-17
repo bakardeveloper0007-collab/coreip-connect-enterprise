@@ -40,6 +40,7 @@ export interface ProductCategory extends Timestamps {
   description: string | null;
   image_url: string | null;
   icon: string | null;
+  group_name: string;
   sort_order: number;
   enabled: boolean;
   seo_title: string | null;

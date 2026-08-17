@@ -76,12 +76,24 @@ export const RESOURCE_CONFIG = {
     titleField: "name",
     columns: [
       { key: "name", label: "Category" },
+      { key: "group_name", label: "Main group" },
       { key: "slug", label: "Slug" },
       { key: "sort_order", label: "Order" },
     ],
     fields: [
       { name: "name", label: "Category name", type: "text", required: true },
       { name: "slug", label: "URL slug", type: "slug", sourceField: "name" },
+      {
+        name: "group_name",
+        label: "Main group",
+        type: "select",
+        required: true,
+        options: [
+          { label: "Hardware", value: "Hardware" },
+          { label: "Software", value: "Software" },
+        ],
+        help: "Controls which navbar column this category appears under.",
+      },
       { name: "description", label: "Description", type: "textarea" },
       { name: "image_url", label: "Image", type: "image", group: "Media" },
       { name: "icon", label: "Icon name", type: "text", group: "Media", help: "Lucide icon name, e.g. server." },
