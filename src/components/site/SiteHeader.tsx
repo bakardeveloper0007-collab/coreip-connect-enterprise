@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
+import { QuoteDialog } from "@/components/site/QuoteDialog";
 import { cn } from "@/lib/utils";
 import { publicQueries } from "@/services/queries";
 import { CategoryLink, GroupLink, ProductLink } from "@/components/catalog/CatalogLinks";
