@@ -28,7 +28,9 @@ export const askCoreIpAssistant = createServerFn({ method: "POST" })
         .limit(60),
       client
         .from("products")
-        .select("name,slug,short_description,features,category:product_categories(slug)")
+        .select(
+          "name,slug,short_description,features,category:product_categories(slug,group_name)",
+        )
         .eq("status", "published")
         .limit(60),
       client
@@ -49,9 +51,12 @@ export const askCoreIpAssistant = createServerFn({ method: "POST" })
           }`,
       ),
       ...(products.data ?? []).map((p) => {
-        const cat = (p as { category?: { slug?: string } | null }).category?.slug ?? "all";
+        const category = (p as { category?: { slug?: string; group_name?: string } | null })
+          .category;
+        const cat = category?.slug ?? "all";
+        const group = category?.group_name === "Software" ? "software" : "hardware";
         const features = Array.isArray(p.features) ? (p.features as string[]).join("; ") : "";
-        return `[Product] ${p.name}: ${p.short_description ?? ""} ${features} | link: /products/${cat}/${p.slug}`;
+        return `[Product] ${p.name}: ${p.short_description ?? ""} ${features} | link: /${group}/${cat}/${p.slug}`;
       }),
       ...(services.data ?? []).map(
         (s) => `[Solution] ${s.name}: ${s.short_description ?? ""} | link: /solutions/${s.slug}`,
