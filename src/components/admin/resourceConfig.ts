@@ -66,6 +66,13 @@ export const RESOURCE_CONFIG = {
       { name: "cta_link", label: "CTA link", type: "text", group: "Call to action" },
       ...seoFields,
       statusField,
+      {
+        name: "is_hot",
+        label: "Hot product (navbar)",
+        type: "boolean",
+        group: "Publishing",
+        help: "Shows this product in the navbar's Hot Products column (max 3).",
+      },
       sortField,
     ],
   },

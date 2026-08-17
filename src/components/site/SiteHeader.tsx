@@ -63,8 +63,10 @@ export function SiteHeader() {
     items: productCategories.filter((c) => c.group === group),
   }));
 
-  // Third column: highlighted individual products (newest published, max 3).
-  const hotProducts = (products ?? []).slice(0, 3).map((p) => ({
+  // Third column: products flagged as "Hot product" in the admin panel.
+  // Falls back to the first published products when nothing is flagged yet.
+  const flaggedHot = (products ?? []).filter((p) => (p as { is_hot?: boolean }).is_hot);
+  const hotProducts = (flaggedHot.length > 0 ? flaggedHot : (products ?? [])).slice(0, 3).map((p) => ({
     name: p.name,
     description: p.short_description ?? "",
     image: p.image_url ?? null,
