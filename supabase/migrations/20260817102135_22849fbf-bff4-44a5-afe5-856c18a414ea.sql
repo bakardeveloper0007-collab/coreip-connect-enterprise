@@ -1,0 +1,1 @@
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS is_hot boolean NOT NULL DEFAULT false;

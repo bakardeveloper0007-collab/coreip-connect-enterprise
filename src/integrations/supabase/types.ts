@@ -411,6 +411,7 @@ export type Database = {
           gallery: string[]
           id: string
           image_url: string | null
+          is_hot: boolean
           long_description: string | null
           model_3d_url: string | null
           name: string
@@ -437,6 +438,7 @@ export type Database = {
           gallery?: string[]
           id?: string
           image_url?: string | null
+          is_hot?: boolean
           long_description?: string | null
           model_3d_url?: string | null
           name: string
@@ -463,6 +465,7 @@ export type Database = {
           gallery?: string[]
           id?: string
           image_url?: string | null
+          is_hot?: boolean
           long_description?: string | null
           model_3d_url?: string | null
           name?: string
