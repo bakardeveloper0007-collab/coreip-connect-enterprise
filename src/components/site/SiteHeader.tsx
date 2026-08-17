@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import { publicQueries } from "@/services/queries";
 import { CategoryLink, GroupLink, ProductLink } from "@/components/catalog/CatalogLinks";
@@ -140,19 +141,23 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-2 lg:flex">
+          <LanguageSwitcher />
           <Button variant="hero" size="default" asChild>
             <a href="/#contact">Talk to an Expert</a>
           </Button>
         </div>
 
+        <div className="flex items-center gap-1 lg:hidden">
+          <LanguageSwitcher />
         <button
-          className="rounded-md p-2 text-navy-foreground lg:hidden"
+          className="rounded-md p-2 text-navy-foreground"
           onClick={() => setMobile((v) => !v)}
           aria-label="Toggle navigation"
         >
           {mobile ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
+        </div>
       </div>
 
       {/* Mega menus */}
