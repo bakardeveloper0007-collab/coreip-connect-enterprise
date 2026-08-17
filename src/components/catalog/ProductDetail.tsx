@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Check, Download, FileText, Package } from "lucide-react";
+import { Check, FileText, Package } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { publicQueries } from "@/services/queries";
+import { QuoteDialog } from "@/components/site/QuoteDialog";
+
+import { DatasheetDownload } from "./DatasheetDownload";
 
 import { CatalogShell } from "./CatalogShell";
 import { CatalogNotFound } from "./CatalogNotFound";
@@ -143,15 +146,23 @@ export function ProductDetail({
             )}
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button variant="hero" size="lg" asChild>
-                <a href="/#contact">{product.cta_text ?? "Request a quote"}</a>
-              </Button>
+              <QuoteDialog
+                productInterest={product.name}
+                source="product-page"
+                title={`Request a quote — ${product.name}`}
+                trigger={
+                  <Button variant="hero" size="lg">
+                    {product.cta_text ?? "Request a quote"}
+                  </Button>
+                }
+              />
               {product.brochure_url && (
-                <Button variant="outline" size="lg" asChild>
-                  <a href={product.brochure_url} target="_blank" rel="noreferrer">
-                    <Download className="size-4" /> Datasheet
-                  </a>
-                </Button>
+                <DatasheetDownload
+                  productSlug={product.slug}
+                  productName={product.name}
+                  brochureUrl={product.brochure_url}
+                  access={product.datasheet_access === "gated" ? "gated" : "public"}
+                />
               )}
             </div>
 

@@ -61,6 +61,7 @@ export interface Product extends Timestamps {
   applications: string[];
   specifications: ProductSpecification[];
   brochure_url: string | null;
+  datasheet_access: "public" | "gated";
   video_url: string | null;
   model_3d_url: string | null;
   related_product_ids: string[];
