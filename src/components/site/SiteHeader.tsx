@@ -32,27 +32,23 @@ export function SiteHeader() {
     ? services.map((s) => ({ title: s.name, description: s.short_description ?? "" }))
     : SOLUTIONS.map((s) => ({ title: s.title, description: s.description }));
 
-  const productGroups = products?.length
-    ? (() => {
-        const order: string[] = [];
-        const map = new Map<string, { name: string }[]>();
-        for (const c of categories ?? []) {
-          order.push(c.name);
-          map.set(c.name, []);
-        }
-        for (const p of products) {
-          const label = p.category?.name ?? "Other";
-          if (!map.has(label)) {
-            map.set(label, []);
-            order.push(label);
-          }
-          map.get(label)!.push({ name: p.name });
-        }
-        return order
-          .map((group) => ({ group, items: map.get(group) ?? [] }))
-          .filter((g) => g.items.length > 0);
-      })()
-    : PRODUCT_GROUPS.map((g) => ({ group: g.group, items: g.items.map((i) => ({ name: i.name })) }));
+  // Navbar shows product CATEGORIES only (e.g. IP Phones, Servers, Gateways) — never models.
+  const productCategories = (() => {
+    const counts = new Map<string, number>();
+    for (const p of products ?? []) {
+      const label = p.category?.name;
+      if (label) counts.set(label, (counts.get(label) ?? 0) + 1);
+    }
+    const fromCms = (categories ?? [])
+      .filter((c) => (counts.get(c.name) ?? 0) > 0)
+      .map((c) => ({ name: c.name, description: c.description ?? "", count: counts.get(c.name) ?? 0 }));
+    if (fromCms.length) return fromCms;
+    return PRODUCT_GROUPS.map((g) => ({
+      name: g.group,
+      description: "",
+      count: g.items.length,
+    }));
+  })();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -155,26 +151,24 @@ export function SiteHeader() {
           </div>
         )}
         {open === "Products" && (
-          <div className="container-x grid grid-cols-4 gap-8 py-8">
-            {productGroups.map((g) => (
-              <div key={g.group}>
-                <p className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-cyan">
-                  {g.group}
-                </p>
-                <ul className="mt-3 space-y-2">
-                  {g.items.map((i) => (
-                    <li key={i.name}>
-                      <a
-                        href="#products"
-                        onClick={() => setOpen(null)}
-                        className="text-sm text-navy-foreground/75 transition-colors hover:text-cyan"
-                      >
-                        {i.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="container-x grid grid-cols-3 gap-x-10 gap-y-4 py-8">
+            {productCategories.map((c) => (
+              <a
+                key={c.name}
+                href="#products"
+                onClick={() => setOpen(null)}
+                className="group rounded-lg border border-transparent p-4 transition-colors hover:border-cyan/30 hover:bg-navy-foreground/5"
+              >
+                <p className="font-display text-sm font-semibold text-navy-foreground">{c.name}</p>
+                {c.description && (
+                  <p className="mt-1.5 text-sm leading-relaxed text-navy-foreground/60">
+                    {c.description}
+                  </p>
+                )}
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-cyan opacity-0 transition-opacity group-hover:opacity-100">
+                  View range <ArrowRight className="size-3" />
+                </span>
+              </a>
             ))}
           </div>
         )}
@@ -207,14 +201,14 @@ export function SiteHeader() {
                 Products
               </p>
               <ul className="mt-2 grid grid-cols-2 gap-2">
-                {productGroups.flatMap((g) => g.items).map((i) => (
-                  <li key={i.name}>
+                {productCategories.map((c) => (
+                  <li key={c.name}>
                     <a
                       href="#products"
                       onClick={() => setMobile(false)}
                       className="text-sm text-navy-foreground/80"
                     >
-                      {i.name}
+                      {c.name}
                     </a>
                   </li>
                 ))}
