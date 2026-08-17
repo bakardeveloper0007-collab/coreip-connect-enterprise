@@ -355,6 +355,7 @@ export type Database = {
           created_at: string
           description: string | null
           enabled: boolean
+          group_name: string
           icon: string | null
           id: string
           image_url: string | null
@@ -369,6 +370,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           enabled?: boolean
+          group_name?: string
           icon?: string | null
           id?: string
           image_url?: string | null
@@ -383,6 +385,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           enabled?: boolean
+          group_name?: string
           icon?: string | null
           id?: string
           image_url?: string | null

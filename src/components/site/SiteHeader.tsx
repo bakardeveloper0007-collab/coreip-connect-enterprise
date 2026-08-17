@@ -41,14 +41,25 @@ export function SiteHeader() {
     }
     const fromCms = (categories ?? [])
       .filter((c) => (counts.get(c.name) ?? 0) > 0)
-      .map((c) => ({ name: c.name, description: c.description ?? "", count: counts.get(c.name) ?? 0 }));
+      .map((c) => ({
+        name: c.name,
+        description: c.description ?? "",
+        count: counts.get(c.name) ?? 0,
+        group: c.group_name === "Software" ? "Software" : "Hardware",
+      }));
     if (fromCms.length) return fromCms;
     return PRODUCT_GROUPS.map((g) => ({
       name: g.group,
       description: "",
       count: g.items.length,
+      group: /software|nms|management/i.test(g.group) ? "Software" : "Hardware",
     }));
   })();
+
+  const productColumns = (["Software", "Hardware"] as const).map((group) => ({
+    group,
+    items: productCategories.filter((c) => c.group === group),
+  }));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -151,24 +162,36 @@ export function SiteHeader() {
           </div>
         )}
         {open === "Products" && (
-          <div className="container-x grid grid-cols-3 gap-x-10 gap-y-4 py-8">
-            {productCategories.map((c) => (
-              <a
-                key={c.name}
-                href="#products"
-                onClick={() => setOpen(null)}
-                className="group rounded-lg border border-transparent p-4 transition-colors hover:border-cyan/30 hover:bg-navy-foreground/5"
-              >
-                <p className="font-display text-sm font-semibold text-navy-foreground">{c.name}</p>
-                {c.description && (
-                  <p className="mt-1.5 text-sm leading-relaxed text-navy-foreground/60">
-                    {c.description}
-                  </p>
-                )}
-                <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-cyan opacity-0 transition-opacity group-hover:opacity-100">
-                  View range <ArrowRight className="size-3" />
-                </span>
-              </a>
+          <div className="container-x grid grid-cols-2 gap-x-12 py-8">
+            {productColumns.map((col) => (
+              <div key={col.group}>
+                <p className="border-b border-navy-foreground/10 pb-3 font-display text-base font-bold text-navy-foreground">
+                  {col.group}
+                </p>
+                <div className="mt-3 grid gap-1">
+                  {col.items.length === 0 && (
+                    <p className="p-4 text-sm text-navy-foreground/50">Coming soon.</p>
+                  )}
+                  {col.items.map((c) => (
+                    <a
+                      key={c.name}
+                      href="#products"
+                      onClick={() => setOpen(null)}
+                      className="group rounded-lg border border-transparent p-3 transition-colors hover:border-cyan/30 hover:bg-navy-foreground/5"
+                    >
+                      <p className="flex items-center gap-2 font-display text-sm font-semibold text-navy-foreground">
+                        {c.name}
+                        <ArrowRight className="size-3 text-cyan opacity-0 transition-opacity group-hover:opacity-100" />
+                      </p>
+                      {c.description && (
+                        <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-navy-foreground/60">
+                          {c.description}
+                        </p>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}
@@ -200,19 +223,26 @@ export function SiteHeader() {
               <p className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-cyan">
                 Products
               </p>
-              <ul className="mt-2 grid grid-cols-2 gap-2">
-                {productCategories.map((c) => (
-                  <li key={c.name}>
-                    <a
-                      href="#products"
-                      onClick={() => setMobile(false)}
-                      className="text-sm text-navy-foreground/80"
-                    >
-                      {c.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              {productColumns.map((col) => (
+                <div key={col.group} className="mt-3">
+                  <p className="font-display text-sm font-semibold text-navy-foreground">
+                    {col.group}
+                  </p>
+                  <ul className="mt-1.5 grid grid-cols-2 gap-2">
+                    {col.items.map((c) => (
+                      <li key={c.name}>
+                        <a
+                          href="#products"
+                          onClick={() => setMobile(false)}
+                          className="text-sm text-navy-foreground/80"
+                        >
+                          {c.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
             <ul className="grid gap-2 border-t border-navy-foreground/10 pt-4">
               {links.map((l) => (
