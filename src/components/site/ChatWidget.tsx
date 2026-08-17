@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Bot, Loader2, MessageCircle, Send, X } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -91,7 +92,13 @@ export function ChatWidget() {
                   : "bg-surface text-foreground",
               )}
             >
-              {message.content}
+              {message.role === "assistant" ? (
+                <div className="space-y-2 [&_a]:font-medium [&_a]:text-accent [&_a]:underline [&_li]:ml-4 [&_li]:list-disc [&_strong]:font-semibold">
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                </div>
+              ) : (
+                message.content
+              )}
             </div>
           ))}
           {busy && (
