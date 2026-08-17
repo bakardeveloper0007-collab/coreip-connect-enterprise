@@ -1,6 +1,7 @@
 import { ArrowRight, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroNetwork from "@/assets/hero-network.jpg";
+import { QuoteDialog } from "./QuoteDialog";
 
 export function Hero() {
   return (
@@ -27,11 +28,14 @@ export function Hero() {
             that keeps enterprises connected, secure and productive.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button variant="hero" size="xl" asChild>
-              <a href="#contact">
-                Talk to an Expert <ArrowRight className="size-4" />
-              </a>
-            </Button>
+            <QuoteDialog
+              source="homepage-hero"
+              trigger={
+                <Button variant="hero" size="xl">
+                  Talk to an Expert <ArrowRight className="size-4" />
+                </Button>
+              }
+            />
             <Button variant="onDark" size="xl" asChild>
               <a href="#solutions">Explore Solutions</a>
             </Button>

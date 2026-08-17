@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
+import { QuoteDialog } from "@/components/site/QuoteDialog";
 import { cn } from "@/lib/utils";
 import { publicQueries } from "@/services/queries";
 import { CategoryLink, GroupLink, ProductLink } from "@/components/catalog/CatalogLinks";
@@ -143,9 +144,14 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <LanguageSwitcher />
-          <Button variant="hero" size="default" asChild>
-            <a href="/#contact">Talk to an Expert</a>
-          </Button>
+          <QuoteDialog
+            source="header"
+            trigger={
+              <Button variant="hero" size="default">
+                Talk to an Expert
+              </Button>
+            }
+          />
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
