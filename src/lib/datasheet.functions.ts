@@ -83,7 +83,15 @@ export const requestDatasheetCode = createServerFn({ method: "POST" })
     const { sendOtpMail } = await import("./mailer.server");
     const delivered = await sendOtpMail(data.email, code, product.name);
 
-    return { gated: true as const, requestId: row.id, delivered };
+    // Email domain isn't verified yet: surface the code in the UI so the gated
+    // download flow still works end-to-end. Once email is live, `delivered` is
+    // true and the code is never returned to the browser.
+    return {
+      gated: true as const,
+      requestId: row.id,
+      delivered,
+      fallbackCode: delivered ? null : code,
+    };
   });
 
 /** Step 2 — verify the code and hand back the datasheet link. */
