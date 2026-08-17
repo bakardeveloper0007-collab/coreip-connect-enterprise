@@ -308,6 +308,26 @@ export function SiteHeader() {
                   </ul>
                 </div>
               ))}
+              {hotProducts.length > 0 && (
+                <div className="mt-3">
+                  <p className="font-display text-sm font-semibold text-navy-foreground">
+                    Hot Products
+                  </p>
+                  <ul className="mt-1.5 grid gap-2">
+                    {hotProducts.map((p) => (
+                      <li key={p.name}>
+                        <a
+                          href="#products"
+                          onClick={() => setMobile(false)}
+                          className="text-sm text-navy-foreground/80"
+                        >
+                          {p.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
             <ul className="grid gap-2 border-t border-navy-foreground/10 pt-4">
               {links.map((l) => (
