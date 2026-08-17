@@ -46,6 +46,7 @@ export function SiteHeader() {
         description: c.description ?? "",
         count: counts.get(c.name) ?? 0,
         group: c.group_name === "Software" ? "Software" : "Hardware",
+        image: c.image_url ?? null,
       }));
     if (fromCms.length) return fromCms;
     return PRODUCT_GROUPS.map((g) => ({
@@ -53,12 +54,20 @@ export function SiteHeader() {
       description: "",
       count: g.items.length,
       group: /software|nms|management/i.test(g.group) ? "Software" : "Hardware",
+      image: null as string | null,
     }));
   })();
 
   const productColumns = (["Software", "Hardware"] as const).map((group) => ({
     group,
     items: productCategories.filter((c) => c.group === group),
+  }));
+
+  // Third column: highlighted individual products (newest published, max 3).
+  const hotProducts = (products ?? []).slice(0, 3).map((p) => ({
+    name: p.name,
+    description: p.short_description ?? "",
+    image: p.image_url ?? null,
   }));
 
   useEffect(() => {
